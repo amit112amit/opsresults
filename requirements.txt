@@ -4,4 +4,3 @@ h5py==2.9.*
 pyhull==2015.2.1
 ipywidgets==7.5.1
 ipympl==0.3.3
-jupyterlab==1.0.9
