@@ -1,9 +1,6 @@
 #!/bin/bash
 
-# The link for the whole folder: https://drive.google.com/drive/folders/1E6qurNhNs4KqKAOcl_04hnj1jwmigjwo?usp=sharing
-
 # The stats file
-# link from Google drive: https://drive.google.com/file/d/1uP0FyflcPcDkzJUrpN8agS0nfQQwih4K/view?usp=sharing
 ggID='1fj0aSx2SmR0U1xX0iTq7apnBz85WzbPx'
 ggURL='https://drive.google.com/uc?export=download'  
 filename="$(curl -sc /tmp/gcokie1 "${ggURL}&id=${ggID}" | grep -o '="uc-name.*</span>' | sed 's/.*">//;s/<.a> .*//')"
@@ -11,3 +8,10 @@ getcode="$(awk '/_warning_/ {print $NF}' /tmp/gcokie1)"
 curl -Lb /tmp/gcokie1 "${ggURL}&confirm=${getcode}&id=${ggID}" -o "${filename}"
 
 tar xf Data.tar
+
+# Some Jupyter extensions
+jupyter contrib nbextension install --user
+jupyter nbextension enable --py widgetsnbextension
+jupyter labextension install @jupyter-widgets/jupyterlab-manager
+jupyter labextension install jupyter-matplotlib
+jupyter labextension install @jupyter-widgets/jupyterlab-manager itkwidgets
