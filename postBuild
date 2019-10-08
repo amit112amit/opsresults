@@ -8,10 +8,4 @@ getcode="$(awk '/_warning_/ {print $NF}' /tmp/gcokie1)"
 curl -Lb /tmp/gcokie1 "${ggURL}&confirm=${getcode}&id=${ggID}" -o "${filename}"
 
 tar xf Data.tar
-
-# Some Jupyter extensions
-jupyter contrib nbextension install --user
-jupyter nbextension enable --py widgetsnbextension
-jupyter labextension install @jupyter-widgets/jupyterlab-manager
-jupyter labextension install jupyter-matplotlib
-jupyter labextension install @jupyter-widgets/jupyterlab-manager itkwidgets
+rm Data.tar
