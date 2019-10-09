@@ -29,7 +29,7 @@ RUN adduser -D -u ${NB_UID} -h ${HOME} ${NB_USER} && \
     rm -rf ${HOME}/opsresults && \
     bash ${HOME}/getdata && \
     rm -rf /usr/local/share/.cache && \
-    apk del build-dependencies && \
+    apk del build-dependencies test-dependencies && \
     chown -R ${NB_UID} ${HOME}
 
 USER ${NB_USER}
