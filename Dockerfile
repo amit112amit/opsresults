@@ -20,10 +20,10 @@ RUN adduser -D -u ${NB_UID} ${NB_USER} -h ${HOME} && \
         nodejs npm && \
     apk add --no-cache \
         --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing/ \
-        hdf5 openblas py3-numpy py3-h5py py3-pandas && \
+        hdf5 openblas && \
     ln -s /usr/include/locale.h /usr/include/xlocale.h && \
-    pip3 install --no-cache-dir notebook==6.0.1 jupyterlab==1.1.4 \
-        ipywidgets==7.5.1 pyhull==2015.2.1 ipympl==0.3.3 && \
+    pip3 install --no-cache-dir notebook==6.0.1 jupyterlab==1.1.4 ipywidgets==7.5.1 \
+        pyhull==2015.2.1 numpy==1.17.2 h5py==2.10.0 pandas==0.25.1 ipympl==0.3.3 && \
     jupyter labextension install @jupyter-widgets/jupyterlab-manager --no-build && \
     jupyter labextension install jupyter-matplotlib --no-build && \
     jupyter lab build && \
