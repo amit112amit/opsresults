@@ -22,14 +22,11 @@ RUN adduser -D -u ${NB_UID} ${NB_USER} -h ${HOME} && \
         --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing/ \
         hdf5 openblas py3-numpy py3-h5py py3-pandas && \
     ln -s /usr/include/locale.h /usr/include/xlocale.h && \
-    pip3 install --no-cache-dir notebook==6.0.1 jupyter==1.0.0 jupyterlab==1.1.4 plotly==4.1.1 \
-	ipywidgets==7.5.1 pyhull==2015.2.1 && \
-    export NODE_OPTIONS=--max-old-space-size=4096 && \
+    pip3 install --no-cache-dir notebook==6.0.1 jupyterlab==1.1.4 \
+        ipywidgets==7.5.1 pyhull==2015.2.1 ipympl==0.3.3 && \
     jupyter labextension install @jupyter-widgets/jupyterlab-manager --no-build && \
-    jupyter labextension install plotlywidget@1.1.1 --no-build && \
-    jupyter labextension install jupyterlab-plotly@1.1.2 --no-build && \
+    jupyter labextension install jupyter-matplotlib --no-build && \
     jupyter lab build && \
-    unset NODE_OPTIONS && \
     cd ${HOME} && \
     git clone https://github.com/amit112amit/opsresults.git && \
     mv ${HOME}/opsresults/* ${HOME} && \
