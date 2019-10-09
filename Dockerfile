@@ -4,12 +4,14 @@ FROM python:3.7-alpine
 # User arguments
 ARG NB_USER=amit
 ARG NB_UID=1000
+ARG NB_GID=100
 ENV USER ${NB_USER}
 ENV NB_UID ${NB_UID}
+ENV NB_GID ${NB_GID}
 ENV HOME /home/${NB_USER}
 
 # Make a user and Install stuff
-RUN mkdir -p ${HOME} && \
+RUN mkdir -p ${HOME}/.jupyter && \
     adduser -D -u ${NB_UID} ${NB_USER} && \
     chmod g+w /etc/passwd /etc/group && \
     apk add --no-cache zeromq && \
@@ -24,7 +26,7 @@ RUN mkdir -p ${HOME} && \
         hdf5 openblas py3-numpy py3-h5py py3-pandas && \
     ln -s /usr/include/locale.h /usr/include/xlocale.h && \
     pip3 install --no-cache-dir notebook==6.0.1 jupyter==1.0.0 jupyterlab==1.1.4 plotly==4.1.1 \
-	ipywidgets==7.5.1 && \
+	ipywidgets==7.5.1 pyhull==2015.2.1 && \
     export NODE_OPTIONS=--max-old-space-size=4096 && \
     jupyter labextension install @jupyter-widgets/jupyterlab-manager --no-build && \
     jupyter labextension install plotlywidget@1.1.1 --no-build && \
@@ -33,16 +35,17 @@ RUN mkdir -p ${HOME} && \
     unset NODE_OPTIONS && \
     cd ${HOME} && \
     git clone https://github.com/amit112amit/opsresults.git && \
-    bash ${HOME}/opsresults/postBuild && \
-    cp ${HOME}/opsresults/fix-permissions /usr/bin/fix-permission && \
+    bash ${HOME}/opsresults/getdata && \
+    cp ${HOME}/opsresults/fix-permissions /usr/bin/fix-permissions && \
+    chmod +x /usr/bin/fix-permissions && \
     cp ${HOME}/opsresults/jupyter_notebook_config.py ${HOME}/.jupyter && \
-    chown -R ${NB_USER}:${NB_USER} ${HOME}/.jupyter
-    chmod -R 755 ${HOME}/.jupyter
+    chown -R ${NB_USER}:${NB_USER} ${HOME}/.jupyter && \
+    chmod -R 755 ${HOME}/.jupyter && \
     fix-permissions ${HOME} && \
     npm cache clean --force && \
     rm -rf /usr/local/share/.cache && \
     rm -rf /usr/local/share/jupyter/lab/staging && \
-    apk del build-dependencies node-dependencies
+    apk del build-dependencies node-dependencies test-dependencies
 
 WORKDIR ${HOME}/opsresults
 

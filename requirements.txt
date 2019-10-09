@@ -1,7 +1,0 @@
-numpy
-matplotlib
-ipympl
-h5py
-pyhull
-ipywidgets
-itkwidgets
