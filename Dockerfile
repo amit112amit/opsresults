@@ -12,8 +12,8 @@ ENV PYTHONPATH /usr/lib/python3.7/site-packages
 # Make a user and Install stuff
 RUN adduser -D -u ${NB_UID} ${NB_USER} -h ${HOME} && \
     apk add --no-cache zeromq && \
-    apk add --no-cache --virtual build-dependencies bash \
-        git python3-dev ca-certificates libstdc++ gcc g++ zeromq-dev curl && \
+    apk add --no-cache --virtual build-dependencies bash git gcc g++ \
+        python3-dev ca-certificates libstdc++ zeromq-dev curl freetype-dev libpng-dev && \
     apk add --no-cache --virtual test-dependencies ncdu && \
     apk add --no-cache --virtual node-dependencies \
         --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing/ \
