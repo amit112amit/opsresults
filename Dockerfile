@@ -9,37 +9,29 @@ ENV NB_UID ${NB_UID}
 ENV HOME /home/${NB_USER}
 ENV PYTHONPATH /usr/lib/python3.7/site-packages
 
+USER root
+
 # Make a user and Install stuff
-RUN adduser -D -u ${NB_UID} ${NB_USER} -h ${HOME} && \
+RUN adduser -D -u ${NB_UID} -h ${HOME} ${NB_USER} && \
     apk add --no-cache zeromq && \
     apk add --no-cache --virtual build-dependencies bash git gcc g++ \
-        python3-dev ca-certificates libstdc++ zeromq-dev curl freetype-dev libpng-dev && \
+        python3-dev ca-certificates libstdc++ zeromq-dev curl freetype-dev \
+         libpng-dev && \
     apk add --no-cache --virtual test-dependencies ncdu && \
-    apk add --no-cache --virtual node-dependencies \
-        --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing/ \
-        nodejs npm && \
     apk add --no-cache \
         --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing/ \
-        hdf5 openblas && \
+        hdf5 openblas py3-numpy py3-pandas py3-h5py py3-matplotlib && \
     ln -s /usr/include/locale.h /usr/include/xlocale.h && \
-    pip3 install --no-cache-dir notebook==6.0.1 jupyterlab==1.1.4 ipywidgets==7.5.1 \
-        pyhull==2015.2.1 numpy==1.17.2 h5py==2.10.0 pandas==0.25.1 ipympl==0.3.3 && \
-    jupyter labextension install @jupyter-widgets/jupyterlab-manager --no-build && \
-    jupyter labextension install jupyter-matplotlib --no-build && \
-    jupyter lab build && \
+    pip3 install --no-cache-dir ipympl==0.3.3 pyhull==2015.2.1 && \
     cd ${HOME} && \
     git clone https://github.com/amit112amit/opsresults.git && \
     mv ${HOME}/opsresults/* ${HOME} && \
     rm -rf ${HOME}/opsresults && \
     bash ${HOME}/getdata && \
-    chown -R ${NB_UID} ${HOME} && \
-    npm cache clean --force && \
     rm -rf /usr/local/share/.cache && \
-    rm -rf /usr/local/share/jupyter/lab/staging && \
-    apk del build-dependencies node-dependencies test-dependencies
-
-WORKDIR ${HOME}
-
-EXPOSE 8888
+    apk del build-dependencies && \
+    chown -R ${NB_UID} ${HOME}
 
 USER ${NB_USER}
+
+WORKDIR ${HOME}
