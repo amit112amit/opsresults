@@ -10,7 +10,12 @@ def getstats(runid, fileid):
         msd = statfile['MSD'][::4000]
         vol = statfile['Volume'][::4000]
         rms = statfile['RMSAngleDeficit'][::4000]
-        asp = vtkfile['Asphericity'][::2]
+        # Calculate asphericity
+        for i in range(0, 1000, 2):
+            points = vtkfile['T{}/Points'.format(i)]
+            R = np.linalg.norm(points, axis=1, keepdims=True)
+            R0 = R.mean()
+            asp = np.mean((R - R0)**2)/R0**2
     return msd, vol, rms, asp
 
 
@@ -60,3 +65,8 @@ def onevtkfile():
                         allvtk[j, t, i, :] = vtkfile['T{}/Points'.format(2*t)][:].ravel()
         onefile.create_dataset('Points', data=allvtk, chunks=(1, 50, 3, 216), 
                 compression='gzip', compression_opts=9)
+
+
+if __name__ == '__main__':
+    #onevtkfile()
+    onestatfile()

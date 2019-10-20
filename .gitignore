@@ -102,3 +102,7 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+# Ignore data files
+StatsFile.h5
+VTKFile.h5
