@@ -68,5 +68,5 @@ def onevtkfile():
 
 
 if __name__ == '__main__':
-    #onevtkfile()
+    onevtkfile()
     onestatfile()
